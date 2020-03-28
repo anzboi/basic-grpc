@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basic-grpc
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: basic-grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: basic-grpc
+  template:
+    metadata:
+      labels:
+        app: basic-grpc
+    spec:
+      containers:
+        - name: basic-grpc
+          image: {{ .Values.deployment.image }}{{ if (.Values.deployment.tag) }}:{{.Values.deployment.tag}}{{ end }}
+          ports:
+            - name: grpc
+              containerPort: 8080
+              protocol: TCP
